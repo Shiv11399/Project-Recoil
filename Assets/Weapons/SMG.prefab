@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3935841800790732941}
   - component: {fileID: 7122828101388491997}
   m_Layer: 0
-  m_Name: Sci-Fi Automatic
+  m_Name: SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 3287090290047603032}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.31, y: -0.072, z: 1.001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 2284817495612303212}
   m_Father: {fileID: 0}

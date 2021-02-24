@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private float DashFuleRegenSpeed = 1f;
     [SerializeField]
     private float DashFuleAmount = 1f;
+    private animationController animator;
     public LayerMask environmentMask;
     public float upRecoil;
     public float sideRecoil;
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviour
         Motor = GetComponent<PlayerMotor>();
         joint = GetComponent<ConfigurableJoint>();
         SetJointSettings(jointSpring);
+        animator = GetComponentInChildren<animationController>();
+      
     }
     void Update()
     {
@@ -46,7 +49,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit _hit;
         if (Physics.Raycast(transform.position, Vector3.down, out _hit, 100f,environmentMask))
         {
-            joint.targetPosition = new Vector3(0f, -_hit.point.y, 0f);//set the new target position to the new base.
+            joint.targetPosition = new Vector3(0f,-_hit.point.y, 0f);//set the new target position to the new base.
         }
         else
         {
@@ -55,11 +58,40 @@ public class PlayerController : MonoBehaviour
         //calculate movement velocity as a 3D vector
         float xMov = Input.GetAxisRaw("Horizontal");
         float yMov =  Input.GetAxisRaw("Vertical");
-        
+        //animatoin script part.Can be replayced by a blend tree
+        /* if(yMov > 0)
+         {
+             animator.SetBool("isWalking", true);
+         }
+         if (yMov == 0)
+         {
+             animator.SetBool("isWalking", false);
+             animator.SetBool("isWalkingBack", false);
+         }
+         if(yMov < 0)
+         {
+             animator.SetBool("isWalkingBack", true);
+         }
+         //
+         if (xMov > 0)
+         {
+             animator.SetBool("isGoingRight", true);
+         }
+         if (xMov == 0)
+         {
+             animator.SetBool("isGoingRight", false);
+             animator.SetBool("isGoingLeft", false);
+         }
+         if (xMov < 0)
+         {
+             animator.SetBool("isGoingLeft", true);
+         }*/
+
+
 
         Vector3 moveHorizontal = transform.right * xMov;
         Vector3 moveVertical = transform.forward * yMov;
-
+        animator.Animate(moveHorizontal, moveVertical);
         Vector3 Velocity = (moveHorizontal + moveVertical) * speed;// final movement vector
 
 
@@ -117,4 +149,5 @@ public class PlayerController : MonoBehaviour
         sideRecoil += side;
         upRecoil += up;
     }
+    
 }
