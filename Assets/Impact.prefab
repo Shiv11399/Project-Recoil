@@ -40,6 +40,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2852607890841762562}
     m_Modifications:
+    - target: {fileID: 2310355392879511206, guid: 801b9158a1d3cb5448c2e03fc984abff, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9099380373082635913, guid: 801b9158a1d3cb5448c2e03fc984abff, type: 3}
       propertyPath: m_Name
       value: LongSparks
@@ -150,6 +154,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2865951688576819149, guid: 76e7e4e2ee2efa540b56da0a31d5ad4f, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76e7e4e2ee2efa540b56da0a31d5ad4f, type: 3}
 --- !u!4 &1440504922925474293 stripped
@@ -164,6 +172,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2852607890841762562}
     m_Modifications:
+    - target: {fileID: 586674410632732848, guid: 4c8f73e4d588d2746b51faa880963597, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1485033893224044482, guid: 4c8f73e4d588d2746b51faa880963597, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

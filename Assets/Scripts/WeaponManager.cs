@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Mirror;
-using UnityEngine.UI;
 [RequireComponent(typeof(PlayerShoot))]
 public class WeaponManager : NetworkBehaviour
 {
@@ -56,6 +55,11 @@ public class WeaponManager : NetworkBehaviour
         {
            Util.SetLayerRecursively(weaponInst, LayerMask.NameToLayer(weaponLayerName));
         }
+        if (!isLocalPlayer)
+        {
+            //SetLayerRecursively(_weapon.WeaponGraphics, LayerMask.NameToLayer("RemoteplayerLayer"));
+        }
+       // _weapon.handLeft.transform.Translate(currentWeaponGraphics.leftGunGrip.transform.position);
     }
     void UnEquipt()
     {
@@ -92,6 +96,24 @@ public class WeaponManager : NetworkBehaviour
         Gun.timeForRelode = 2.25f;
         EquipWeapon(Gun);
         playerShoot.ResetBullets(Gun.Magzine);
+    }
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (null == obj)
+        {
+            return;
+        }
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (null == child)
+            {
+                continue;
+            }
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 
 }

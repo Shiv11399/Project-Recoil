@@ -10,16 +10,22 @@ public class PlayerSetup : NetworkBehaviour
     private string remoteLayerName = "RemoteplayerLayer";
     public GameObject playerUiPrefab;
     public GameObject playerUiInstance;
+    private GameObject thirdPersonModel;
+    public GameObject firstPersonModel;
+    GameObject FPP;
+    public GameObject handPlacement;
    // Camera sceneCamera;
     private void Start()
     {
         if (!isLocalPlayer)
         {
-            DisableComponents();
-            AssignRemoteLayer();
+            DisableComponents();//disable components on enemyes or team mates!!!
+            AssignRemoteLayer();//change layers for weapon and main camera
         }
         else if(isLocalPlayer)
         {
+            thirdPersonModel = GameObject.FindGameObjectWithTag("Graphics");
+            SetupFirstPersonGraphics();//setup first person model.
            /* sceneCamera = Camera.main;
             if (sceneCamera != null)
             {
@@ -48,9 +54,12 @@ public class PlayerSetup : NetworkBehaviour
     void AssignRemoteLayer()
     {
         gameObject.layer = LayerMask.NameToLayer(remoteLayerName);//will assign layer name to the game object
+
+        SetLayerRecursively(gameObject, LayerMask.NameToLayer(remoteLayerName));
     }
     void DisableComponents()
     {
+        //I want a different model for enemy player I whould set it here
         for (int i = 0; i < componentsToDisable.Length; i++)
         {
             componentsToDisable[i].enabled = false;//desabling different components in the enemy player.
@@ -64,6 +73,28 @@ public class PlayerSetup : NetworkBehaviour
 
         GameManager.UnRegister(transform.name);
     }
+    void SetupFirstPersonGraphics()
+    {
+        //Destroy(thirdPersonModel); will do it later to setup the first person player.
+        //FPP = Instantiate(firstPersonModel, handPlacement.transform);// not setting up the fpp character RN
+        //whenever you change the gun change the setup here 
+    }
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (null == obj)
+        {
+            return;
+        }
 
+        obj.layer = newLayer;
 
+        foreach (Transform child in obj.transform)
+        {
+            if (null == child)
+            {
+                continue;
+            }
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
 }

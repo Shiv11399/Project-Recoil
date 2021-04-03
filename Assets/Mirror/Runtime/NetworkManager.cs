@@ -198,6 +198,7 @@ namespace Mirror
         /// </summary>
         public virtual void OnValidate()
         {
+            
             // add transport if there is none yet. makes upgrading easier.
             if (transport == null)
             {

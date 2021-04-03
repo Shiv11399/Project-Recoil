@@ -7,6 +7,8 @@ using Mirror;
 public class PlayerShoot : NetworkBehaviour
 {
     public PlayerWeapon currentWeapon;
+    //reference of relode class
+    public Relode RelodeInst;
 
     public Camera cam;
     public LayerMask mask;
@@ -17,9 +19,11 @@ public class PlayerShoot : NetworkBehaviour
     public float recoilForce = 5.0f;
     private Vector3 originalRotation;
     PlayerWeapon Gun = new PlayerWeapon();
+   static WeaponGraphics gra;
     public static float Mag;
     private void Start()
     {
+        
         Mag = Gun.Magzine;
         if (cam == null)
         {
@@ -27,11 +31,12 @@ public class PlayerShoot : NetworkBehaviour
             this.enabled = false;
         }
         originalRotation = transform.localEulerAngles;
-
+        
         // weaponGFX.layer = LayerMask.NameToLayer(weaponLayerName);//assign layer to weaponGFX
         weaponManager = GetComponent<WeaponManager>();
         playerMotor = GetComponent<PlayerMotor>();
         rb = GetComponent<Rigidbody>();
+        WeaponGraphics gra = weaponManager.GetCurrentWeaponGraphics();
     }
     private void Update()
     {
@@ -61,9 +66,10 @@ public class PlayerShoot : NetworkBehaviour
                     CancelInvoke("AddRecoil");
                 }
             
-            if(Input.GetKeyDown("r"))
+            if(Input.GetKeyDown("r")&&isLocalPlayer)
             {
-                StartCoroutine(Relode(currentWeapon.Magzine,currentWeapon.timeForRelode));
+                //RelodeInst.StartRelode(currentWeapon.timeForRelode);
+                StartCoroutine(Relode(currentWeapon.Magzine,currentWeapon.timeForRelode,gra));
                 
             }
         }
@@ -131,10 +137,12 @@ public class PlayerShoot : NetworkBehaviour
         playerMotor.Recoil(Gun.recoilAmount);
         // transform.localEulerAngles += upRecoil;
     }
-    private IEnumerator Relode(float r, float rt)//to call a method after a delay
+    private IEnumerator Relode(float r, float rt, WeaponGraphics g)//to call a method after a delay
     {
+        //Destroy(g.magzinePrefab);
         yield return new WaitForSeconds(rt);//change for different guns later.
         Mag = r;
+        //RelodeInst.StopRelode();
     }
     public void ResetBullets(float r)
     {

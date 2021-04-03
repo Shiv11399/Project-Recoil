@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveHorizontal = transform.right * xMov;
         Vector3 moveVertical = transform.forward * yMov;
-        animator.Animate(moveHorizontal, moveVertical);
+        animator.Animate(xMov, yMov);
         Vector3 Velocity = (moveHorizontal + moveVertical) * speed;// final movement vector
 
 

@@ -39,7 +39,7 @@ public class Player : NetworkBehaviour
     private void CmdBroadCastNewPlayerSetup()
     {
         RpcSetupPlayerOnAllClients();
-        Debug.Log("is this working");
+        //Debug.Log("is this working");
     }
     [ClientRpc]
     private void RpcSetupPlayerOnAllClients()

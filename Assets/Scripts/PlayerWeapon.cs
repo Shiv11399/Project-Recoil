@@ -11,5 +11,7 @@ public class PlayerWeapon
     public float Magzine = 22;
     public float recoilAmount = 0.3f;
     public float timeForRelode = 2.25f;
+    public GameObject handLeft;
+    public GameObject handRight;
 
 }
