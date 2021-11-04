@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BulletImpact 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1182313124682350624, guid: 40838f74f2d3b454c9e7c73427d0b5c8, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4447804134629235067, guid: 40838f74f2d3b454c9e7c73427d0b5c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

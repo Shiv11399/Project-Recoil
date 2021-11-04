@@ -4,7 +4,8 @@ using Mirror;
 [RequireComponent(typeof(PlayerShoot))]
 public class WeaponManager : NetworkBehaviour
 {
- 
+    public delegate void SwitchWeapon(string weaopon);
+    public SwitchWeapon switchWeapon;
     [SerializeField]
     private string weaponLayerName = "Weapon";
     [SerializeField]
@@ -22,9 +23,7 @@ public class WeaponManager : NetworkBehaviour
 
     private void Start()
     {
-        //BuyMenu = GameObject.Find("BuyMenu");
-        //create a buy phase later.
-        EquipWeapon(primaryWeapon);
+        EquipWeapon(primaryWeapon);//this is where you equip the primary weapon
         playerShoot = GetComponent<PlayerShoot>();
         if(playerShoot == null)
         {
@@ -46,6 +45,7 @@ public class WeaponManager : NetworkBehaviour
         currentWeapon = _weapon;
         weaponInst = Instantiate(_weapon.WeaponGraphics, weaponHolder.position, weaponHolder.rotation);
         weaponInst.transform.SetParent(weaponHolder);//to set weapon holder its parent
+        switchWeapon?.Invoke(currentWeapon.Name);//launching a event which sends weapon name 
         currentWeaponGraphics = weaponInst.GetComponent<WeaponGraphics>();//we check for the component graphics on the weapon Instance
         if (currentWeaponGraphics == null)
         {

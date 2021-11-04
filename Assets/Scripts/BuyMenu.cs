@@ -15,6 +15,8 @@ public class BuyMenu : MonoBehaviour
 
         if (Input.GetKeyDown("b"))
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
             GameObject go = GameObject.FindGameObjectWithTag("Player");
             weaponManager = go.GetComponent<WeaponManager>();
             if (go == null)
@@ -41,6 +43,8 @@ public class BuyMenu : MonoBehaviour
         {
             buyMenu.SetActive(false);
             buyMenuOn = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             //Time.timeScale = 1;
         }
 

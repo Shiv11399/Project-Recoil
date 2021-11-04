@@ -127,6 +127,8 @@ public class Player : NetworkBehaviour
     }
     void DefaultSetup()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         for (int i = 0; i < disableGameObjectOnDeath.Length; i++)
         {
             disableGameObjectOnDeath[i].SetActive(true);

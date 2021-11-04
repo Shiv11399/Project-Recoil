@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Relode : MonoBehaviour
 {
-    public Animation relode;
+    private Animation relode;
     private void Start()
     {
-        
+        relode = GetComponentInChildren<Animation>();
+
     }
 
     // Update is called once per frame
     public void StartRelode(float relodeSpeed)
     {
-        //relode.Play();
-        //relode["RelodeAnim"].speed = relodeSpeed;
+        relode.Play();
+        relode["Relode"].speed = relodeSpeed;
     }
     public void StopRelode()
     {

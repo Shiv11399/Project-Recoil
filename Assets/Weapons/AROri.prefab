@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzelFlash: {fileID: 8199797050367737724}
-  hiteffectPrefab: {fileID: 8968411430449590459, guid: 40838f74f2d3b454c9e7c73427d0b5c8, type: 3}
+  hiteffectPrefab: {fileID: 7214294931218207211, guid: 2f57030f8d5d33a47b361e1075e06f51, type: 3}
   leftGunGrip: {fileID: 1437160849855305148}
   rightGunGrip: {fileID: 7609084696673092126}
   magzinePrefab: {fileID: 0}

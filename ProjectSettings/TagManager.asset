@@ -6,6 +6,11 @@ TagManager:
   tags:
   - LeftHand
   - Graphics
+  - Throwable
+  - WeaponHolder
+  - Fps
+  - MuzzelFlash
+  - canTeleport
   layers:
   - Default
   - TransparentFX
@@ -20,7 +25,7 @@ TagManager:
   - Weapon
   - CollidableEnvironment
   - PlayerCantSee
-  - 
+  - FPPrig
   - 
   - 
   - 

@@ -3,7 +3,7 @@
 [System.Serializable]
 public class PlayerWeapon
 {
-    public string Name = "SMG";
+    public string Name = "SMG";//using strings to set up weapon stats is a bad practice 
     public int Damage = 26;
     public float Range = 70f;
     public GameObject WeaponGraphics;

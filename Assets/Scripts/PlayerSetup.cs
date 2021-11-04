@@ -8,6 +8,7 @@ public class PlayerSetup : NetworkBehaviour
     public Behaviour[] componentsToDisable;
     [SerializeField]
     private string remoteLayerName = "RemoteplayerLayer";
+    private string notVisibleLayer = "Weapon";
     public GameObject playerUiPrefab;
     public GameObject playerUiInstance;
     private GameObject thirdPersonModel;
@@ -21,6 +22,7 @@ public class PlayerSetup : NetworkBehaviour
         {
             DisableComponents();//disable components on enemyes or team mates!!!
             AssignRemoteLayer();//change layers for weapon and main camera
+            FirstPersonDisable();
         }
         else if(isLocalPlayer)
         {
@@ -43,6 +45,12 @@ public class PlayerSetup : NetworkBehaviour
         }
       
        
+    }
+    public void FirstPersonDisable()//Find the Fps model and make it Invisible for remote players
+    {
+        GameObject Fps = GameObject.FindGameObjectWithTag("Fps");
+        Fps.layer = LayerMask.NameToLayer(remoteLayerName);
+        SetLayerRecursively(Fps, LayerMask.NameToLayer(notVisibleLayer));
     }
     public override void OnStartClient()
     {

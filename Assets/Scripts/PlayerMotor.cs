@@ -19,6 +19,7 @@ public class PlayerMotor : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        FindObjectOfType<PlayerController>().teleport += TeleportPlayer;
     }
     public void Recoil(float R)
     {
@@ -69,7 +70,6 @@ public class PlayerMotor : MonoBehaviour
         }
         if (dashForce != Vector3.zero)
         {
-
             rb.AddForce(dashForce*Time.fixedDeltaTime,ForceMode.Acceleration);//will our rigid body
         }
     }
@@ -85,6 +85,11 @@ public class PlayerMotor : MonoBehaviour
             
 
         }
+    }
+    public void TeleportPlayer(Transform location)//move the player to teleport location
+    {
+        Debug.Log("teleport");
+        rb.MovePosition(location.position);
     }
     
     

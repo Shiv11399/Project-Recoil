@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Mirror;
+using UnityEngine.VFX;
 [RequireComponent(typeof(WeaponManager))]
 [RequireComponent(typeof(PlayerMotor))]
 
@@ -8,8 +9,14 @@ public class PlayerShoot : NetworkBehaviour
 {
     public PlayerWeapon currentWeapon;
     //reference of relode class
-    public Relode RelodeInst;
-
+    public Relode RelodeInst;// creating a new animation for relode
+    //event for reloading Gun
+    public delegate void RelodeGun(bool relodeState);
+    public RelodeGun relodeGun;
+    //event for shooting
+    public delegate void ShootGun(bool shoot);
+    public ShootGun shootGun;
+    public static bool canShoot = true;
     public Camera cam;
     public LayerMask mask;
     private Rigidbody rb;
@@ -21,9 +28,13 @@ public class PlayerShoot : NetworkBehaviour
     PlayerWeapon Gun = new PlayerWeapon();
    static WeaponGraphics gra;
     public static float Mag;
+    //Muzzel Flashes for different weapons
+    public VisualEffect AKmuzzelFlash;
+    public VisualEffect SMGMuzzelFlash;
+    public VisualEffect PistolMuzzelFlash;
     private void Start()
     {
-        
+        FindObjectOfType<animationController>().equipFlash += CanShoot;
         Mag = Gun.Magzine;
         if (cam == null)
         {
@@ -45,7 +56,7 @@ public class PlayerShoot : NetworkBehaviour
         {
             if (currentWeapon.fireRate <= 0)
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetButtonDown("Fire1")&&canShoot == true)
                 {
                     originalRotation = new Vector3(originalRotation.x, transform.localEulerAngles.y, originalRotation.z);
                     Shoot();
@@ -53,24 +64,26 @@ public class PlayerShoot : NetworkBehaviour
 
                 }
             }
-                if (Input.GetButtonDown("Fire1")&& Mag>0)
-                {
-                    cam.transform.Rotate(Vector3.up, 1);
-                    originalRotation = new Vector3(originalRotation.x, transform.localEulerAngles.y, originalRotation.z);
-                    InvokeRepeating("Shoot", 0f, 1f / currentWeapon.fireRate);
-                    InvokeRepeating("AddRecoil", 0f, 1f / currentWeapon.fireRate);
-                }
-                else if (Input.GetButtonUp("Fire1")|| Mag == 0)
-                {
-                    CancelInvoke("Shoot");
-                    CancelInvoke("AddRecoil");
-                }
-            
+            if (Input.GetButtonDown("Fire1") && Mag > 0&&canShoot==true)
+            {
+                cam.transform.Rotate(Vector3.up, 1);
+                originalRotation = new Vector3(originalRotation.x, transform.localEulerAngles.y, originalRotation.z);
+                InvokeRepeating("Shoot", 0f, 1f / currentWeapon.fireRate);
+                InvokeRepeating("AddRecoil", 0f, 1f / currentWeapon.fireRate);
+                shootGun?.Invoke(true);
+            }
+            else if (Input.GetButtonUp("Fire1") || Mag == 0)
+            {
+                CancelInvoke("Shoot");
+                CancelInvoke("AddRecoil");
+                shootGun?.Invoke(false);
+            }
             if(Input.GetKeyDown("r")&&isLocalPlayer)
             {
-                //RelodeInst.StartRelode(currentWeapon.timeForRelode);
+                RelodeInst.StartRelode(currentWeapon.timeForRelode);
                 StartCoroutine(Relode(currentWeapon.Magzine,currentWeapon.timeForRelode,gra));
-                
+                relodeGun?.Invoke(true);//whever r is pressed we use announce this event 
+                CanShoot(false);
             }
         }
     }
@@ -87,6 +100,18 @@ public class PlayerShoot : NetworkBehaviour
     {
         Debug.Log("muzzel flash");
         weaponManager.GetCurrentWeaponGraphics().muzzelFlash.Play();
+      /* if(weaponManager.name == "Ak47")
+        {
+            AKmuzzelFlash.Play();
+        }
+        if (weaponManager.name == "SMG")
+        {
+            SMGMuzzelFlash.Play();
+        }
+        if (weaponManager.name == "pistol")
+        {
+            PistolMuzzelFlash.Play();
+        }*/
     }
     [Command]
     void CmdOnHit(Vector3 _pos, Vector3 _normal)
@@ -99,7 +124,7 @@ public class PlayerShoot : NetworkBehaviour
         GameObject _hitEffect = Instantiate(weaponManager.GetCurrentWeaponGraphics().hiteffectPrefab, _pos, Quaternion.LookRotation(_normal));
         Destroy(_hitEffect, 2f);
     }
-    [Client]
+    //[Client]
     void Shoot()
     {
 
@@ -107,10 +132,9 @@ public class PlayerShoot : NetworkBehaviour
         {
             return;
         }
-
         CmdOnShoot();
         Mag -= 1;
-        Debug.Log("shoot!");
+        Debug.Log("shoot!"+canShoot);
         rb.AddForce(transform.forward * -recoilForce);
         rb.AddForce(transform.up * recoilForce);
         
@@ -142,7 +166,9 @@ public class PlayerShoot : NetworkBehaviour
         //Destroy(g.magzinePrefab);
         yield return new WaitForSeconds(rt);//change for different guns later.
         Mag = r;
+        relodeGun?.Invoke(false);
         //RelodeInst.StopRelode();
+        CanShoot(true);
     }
     public void ResetBullets(float r)
     {
@@ -151,6 +177,10 @@ public class PlayerShoot : NetworkBehaviour
     public float Bullets()
     {
         return Mag;
+    }
+    public void CanShoot(bool _canShoot)
+    {
+        canShoot = _canShoot;
     }
     /*private void StopRecoil()
     {
